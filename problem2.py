@@ -23,6 +23,13 @@ def create_student_record(name, age, major, gpa):
     """
     # TODO: Implement this function
     # Return a dictionary with the provided information
+    student = { # create a dictionary with the informations requested
+        'name': name,
+        'age': age,
+        'major': major,
+        'gpa': gpa
+    }
+    return student
     pass
 
 
@@ -47,6 +54,7 @@ def get_value_safely(dictionary, key, default=None):
     """
     # TODO: Implement this function
     # Hint: Use the .get() method or check if key in dictionary
+    return dictionary.get(key, default) #look for a key; if it exists, returns it, otherwise returns default
     pass
 
 
@@ -67,9 +75,14 @@ def merge_dictionaries(dict1, dict2):
     """
     # TODO: Implement this function
     # Create a new dictionary with items from both
+    merged = dict1.copy() #create a copy of dictionary 1 to not modify it
+
+    merged.update(dict2) #add all the values of dict2 in merged
+
+    return merged #return the combined dictionary
     pass
 
-
+import string
 def count_word_frequency(text):
     """
     Count the frequency of each word in a text string.
@@ -88,9 +101,21 @@ def count_word_frequency(text):
     # TODO: Implement this function
     # Steps:
     # 1. Convert text to lowercase
+    text = text.lower()
     # 2. Remove punctuation (you can use .replace() or import string)
+    for punct in string.punctuation:
+        text = text.replace(punct, "")
     # 3. Split into words
+    words = text.split()
     # 4. Count each word's frequency
+    freq = {}
+    for word in words: 
+        if word in freq:
+            freq[word] += 1 #counts how many times a word appears
+        else:
+            freq[word] = 1
+
+    return freq
     pass
 
 
@@ -111,6 +136,8 @@ def invert_dictionary(dictionary):
     """
     # TODO: Implement this function
     # Create a new dictionary with values as keys and keys as values
+    inverted = {value: key for key, value in dictionary.items()} #create a new dictionary where each key becomes the value and each value becomes the key
+    return inverted
     pass
 
 
@@ -131,6 +158,11 @@ def filter_dictionary(dictionary, keys_to_keep):
     """
     # TODO: Implement this function
     # Loop through keys_to_keep and add them to result if they exist
+    filtered = {} #create a new empty dictionary
+    for key in keys_to_keep: #we look at the list containing the keys to keep
+        if key in dictionary: #for each key if it is in dictionary, we copy it with its value
+            filtered[key] = dictionary[key]
+    return filtered
     pass
 
 
@@ -153,6 +185,11 @@ def group_by_first_letter(words):
     #   - Get first letter
     #   - Add word to the list for that letter
     # Hint: Use .setdefault() or check if key exists
+    grouped = {}
+    for word in words:
+        first_letter = word[0].lower()  # word[0] to take the first letter and lower to make it small character to uniform
+        grouped.setdefault(first_letter, []).append(word) #create an empty list if the key doesn't exist yet and then add the word to the good list
+    return grouped
     pass
 
 
@@ -178,6 +215,14 @@ def calculate_grades_average(students):
     # TODO: Implement this function
     # For each student, calculate average of their grades
     # Hint: sum(grades) / len(grades)
+    averages = {}
+    for student, grades in students.items(): #in order to see all the keys (names) and appropriated values (grades)
+        if grades:  # to not divide by 0
+            avg = round(sum(grades) / len(grades), 2) #calculate the average and then round to 2 decimals
+        else:
+            avg = 0.0
+        averages[student] = avg #stock each averaged grade in a new dictionary averages
+    return averages
     pass
 
 
@@ -203,6 +248,13 @@ def nested_dict_access(data, keys):
     # TODO: Implement this function
     # Start with data, then traverse using each key
     # Return None if any key is missing
+    current = data #we create a variable that reprensents where we are in the dictionary
+    for key in keys: #we look at each key existing
+        if isinstance(current, dict) and key in current: #look if current is really a dictionnary and if a key exists in the dictionary
+            current = current[key]   #go down one level
+        else:
+            return None              #if we can not find the key, we stop there
+    return current
     pass
 
 
